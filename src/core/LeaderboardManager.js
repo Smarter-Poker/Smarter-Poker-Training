@@ -1,11 +1,11 @@
 /**
- * XP-ENGINE: LEADERBOARD & RANKING SYSTEM
+ * DIAMOND-ENGINE: LEADERBOARD & RANKING SYSTEM
  * High-density sorting for Global and Club-specific standings.
  */
 
 export class LeaderboardManager {
     constructor() {
-        this.globalStandings = []; // Array of {playerId, username, level, totalXp}
+        this.globalStandings = []; // Array of {playerId, username, level, totalDiamonds}
     }
 
     updatePlayer(playerData) {
@@ -19,8 +19,8 @@ export class LeaderboardManager {
     }
 
     sortStandings() {
-        // Sort by XP Descending
-        this.globalStandings.sort((a, b) => b.totalXp - a.totalXp);
+        // Sort by Diamonds Descending
+        this.globalStandings.sort((a, b) => (b.totalDiamonds || 0) - (a.totalDiamonds || 0));
     }
 
     getTopRankings(limit = 100) {

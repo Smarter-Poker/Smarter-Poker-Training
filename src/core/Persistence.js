@@ -1,6 +1,6 @@
 import fs from 'fs';
 /**
- * XP-ENGINE: PERSISTENCE LAYER
+ * DIAMOND-ENGINE: PERSISTENCE LAYER
  * Handles Atomic I/O for Player Progress and Global Rankings.
  */
 export class Persistence {

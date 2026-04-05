@@ -1,7 +1,12 @@
 export class ProgressionEngine {
-    addXP(player, amount) {
+    addDiamonds(player, amount) {
         const gain = Math.max(0, amount);
-        console.log(`🔴 RED [XP]: Awarding ${gain} XP to ${player}`);
+        console.log(`💎 [DIAMONDS]: Awarding ${gain} diamonds to ${player}`);
         return gain;
+    }
+
+    // Legacy alias
+    addXP(player, amount) {
+        return this.addDiamonds(player, amount);
     }
 }

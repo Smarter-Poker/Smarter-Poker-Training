@@ -1,47 +1,52 @@
 /**
- * XP-ENGINE - MILITARY GRADE INTEGRATION BRIDGE
- * Logic: Calculates XP, applies streaks, and checks milestones in real-time.
+ * DIAMOND-ENGINE - INTEGRATION BRIDGE
+ * Logic: Calculates diamond rewards, applies streaks, and checks milestones in real-time.
  */
 
-const XP_CONFIG = {
-    BASE_WIN_MULTIPLIER: 0.1, // 10% of pot as XP
-    HAND_PLAYED_XP: 25,
+const DIAMOND_CONFIG = {
+    BASE_WIN_MULTIPLIER: 0.1, // 10% of pot as diamonds
+    HAND_PLAYED_DIAMONDS: 5,
     STREAK_CAP: 2.0,
     LEVEL_EXPONENT: 1.5
 };
 
 export class XpBridge {
-    static calculateXpGain(event, playerProfile) {
-        let rawXp = 0;
-        const streakMultiplier = Math.min(1 + (playerProfile.streakDays * 0.15), XP_CONFIG.STREAK_CAP);
+    static calculateDiamondGain(event, playerProfile) {
+        let rawDiamonds = 0;
+        const streakMultiplier = Math.min(1 + (playerProfile.streakDays * 0.15), DIAMOND_CONFIG.STREAK_CAP);
 
         switch(event.type) {
             case 'HAND_WON':
-                rawXp = (event.potSize * XP_CONFIG.BASE_WIN_MULTIPLIER);
+                rawDiamonds = (event.potSize * DIAMOND_CONFIG.BASE_WIN_MULTIPLIER);
                 break;
             case 'SHOWDOWN_REACHED':
-                rawXp = XP_CONFIG.HAND_PLAYED_XP * 2;
+                rawDiamonds = DIAMOND_CONFIG.HAND_PLAYED_DIAMONDS * 2;
                 break;
             default:
-                rawXp = XP_CONFIG.HAND_PLAYED_XP;
+                rawDiamonds = DIAMOND_CONFIG.HAND_PLAYED_DIAMONDS;
         }
 
-        const totalEarned = Math.floor(rawXp * streakMultiplier);
+        const totalEarned = Math.floor(rawDiamonds * streakMultiplier);
         return this.applyProgress(playerProfile, totalEarned);
     }
 
-    static applyProgress(profile, xpGain) {
-        profile.totalXp += xpGain;
-        const newLevel = Math.floor(Math.pow(profile.totalXp / 1000, 1 / XP_CONFIG.LEVEL_EXPONENT)) + 1;
-        
+    // Legacy alias
+    static calculateXpGain(event, playerProfile) {
+        return this.calculateDiamondGain(event, playerProfile);
+    }
+
+    static applyProgress(profile, diamondGain) {
+        profile.totalDiamonds = (profile.totalDiamonds || profile.totalXp || 0) + diamondGain;
+        const newLevel = Math.floor(Math.pow(profile.totalDiamonds / 500, 1 / DIAMOND_CONFIG.LEVEL_EXPONENT)) + 1;
+
         const leveledUp = newLevel > profile.level;
         profile.level = newLevel;
 
         return {
-            xpGain,
+            diamondGain,
             currentLevel: profile.level,
             leveledUp,
-            totalXp: profile.totalXp
+            totalDiamonds: profile.totalDiamonds
         };
     }
 }

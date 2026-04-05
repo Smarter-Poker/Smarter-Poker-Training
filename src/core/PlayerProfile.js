@@ -2,10 +2,10 @@ export class PlayerProfile {
     constructor(playerId, username) {
         this.id = playerId;
         this.username = username;
-        
+
         // POKERIQ GLOBAL DOMAIN (DIAMOND ARENA)
         this.global = {
-            totalXp : 0,
+            totalDiamonds : 0,
             level : 1,
             prestigeRank : 0,
             tier : 'BRONZE'
@@ -16,7 +16,7 @@ export class PlayerProfile {
     }
 
     addClub(clubId, data) {
-        console.log(`[XP-PROFILE] linking Player ${this.id} to Club: ${clubId}`);
+        console.log(`[DIAMOND-PROFILE] linking Player ${this.id} to Club: ${clubId}`);
         this.clubaffiliations[clubId] = {
             joinedAt: Date.now(),
             status: data.status || 'PENDING',

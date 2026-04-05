@@ -1,12 +1,15 @@
-export const XP_PER_LEVEL = 1000;
+export const DIAMONDS_PER_LEVEL = 500;
 
 export class LevelLogic {
-    static getLevel(xp: number): number {
-        return Math.floor(xp / XP_PER_LEVEL) + 1;
+    static getLevel(diamonds: number): number {
+        return Math.floor(diamonds / DIAMONDS_PER_LEVEL) + 1;
     }
 
-    static getXpForNextLevel(xp: number): number {
-        const currentLevel = LevelLogic.getLevel(xp);
-        return currentLevel * XP_PER_LEVEL - xp;
+    static getDiamondsForNextLevel(diamonds: number): number {
+        const currentLevel = LevelLogic.getLevel(diamonds);
+        return currentLevel * DIAMONDS_PER_LEVEL - diamonds;
     }
 }
+
+// Legacy aliases
+export const XP_PER_LEVEL = DIAMONDS_PER_LEVEL;
