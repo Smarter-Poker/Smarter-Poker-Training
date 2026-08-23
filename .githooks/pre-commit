@@ -1,0 +1,16 @@
+#!/bin/sh
+# A COMMIT VERCEL CANNOT ATTRIBUTE NEVER BUILDS.
+#
+# Vercel refuses to build a commit whose GitHub author it cannot resolve to a
+# user account. The deployment goes to BLOCKED: no build, no logs, nothing in
+# CI can see it, and the only symptom is a red row in the dashboard.
+#
+# On 2026-08-23 five deployments across the estate sat in that state, every one
+# authored 'Agent <agent@smarter.poker>' - an address belonging to no GitHub
+# account. This repo had no hook layer at all, so it is born with the guard
+# rather than acquiring one after its first blocked deploy.
+#
+# Wiring (also done by scripts/ensure-hooks.sh, which is safe to re-run):
+#     git config core.hooksPath .githooks
+set -e
+"$(git rev-parse --show-toplevel)/scripts/guard-commit-identity.sh" || exit 1
